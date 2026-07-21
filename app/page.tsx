@@ -25,6 +25,7 @@ export default function Home() {
   const [labMode, setLabMode] = useState<"attract" | "repel" | "vortex">("attract");
   const [activeService, setActiveService] = useState(0);
   const [mood, setMood] = useState<"ultraviolet" | "solar" | "infra">("ultraviolet");
+  const [portraitScan, setPortraitScan] = useState(false);
   const [archiveProgress, setArchiveProgress] = useState(0);
   const orbRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -192,6 +193,23 @@ export default function Home() {
 
   const scrollToWork = () => document.querySelector("#work")?.scrollIntoView({ behavior: "smooth" });
 
+  const movePortrait = (event: React.PointerEvent<HTMLDivElement>) => {
+    const rect = event.currentTarget.getBoundingClientRect();
+    const x = Math.max(0, Math.min(1, (event.clientX - rect.left) / rect.width));
+    const y = Math.max(0, Math.min(1, (event.clientY - rect.top) / rect.height));
+    event.currentTarget.style.setProperty("--portrait-x", `${x * 100}%`);
+    event.currentTarget.style.setProperty("--portrait-y", `${y * 100}%`);
+    event.currentTarget.style.setProperty("--portrait-rx", `${(0.5 - y) * 5}deg`);
+    event.currentTarget.style.setProperty("--portrait-ry", `${(x - 0.5) * 7}deg`);
+  };
+
+  const resetPortrait = (event: React.PointerEvent<HTMLDivElement>) => {
+    event.currentTarget.style.setProperty("--portrait-x", "50%");
+    event.currentTarget.style.setProperty("--portrait-y", "50%");
+    event.currentTarget.style.setProperty("--portrait-rx", "0deg");
+    event.currentTarget.style.setProperty("--portrait-ry", "0deg");
+  };
+
   return (
     <main className={`${loaded ? "site is-loaded" : "site"} mood-${mood}`}>
       <div className="scroll-progress" aria-hidden="true" />
@@ -215,9 +233,10 @@ export default function Home() {
 
       <div className={`menu-panel ${menuOpen ? "is-open" : ""}`}>
         <nav>
-          <a href="#work" onClick={() => setMenuOpen(false)}><span>01</span> Selected work</a>
-          <a href="#about" onClick={() => setMenuOpen(false)}><span>02</span> Our signal</a>
-          <a href="#contact" onClick={() => setMenuOpen(false)}><span>03</span> Contact</a>
+          <a href="#portrait" onClick={() => setMenuOpen(false)}><span>01</span> Visual artifact</a>
+          <a href="#work" onClick={() => setMenuOpen(false)}><span>02</span> Selected work</a>
+          <a href="#about" onClick={() => setMenuOpen(false)}><span>03</span> Our signal</a>
+          <a href="#contact" onClick={() => setMenuOpen(false)}><span>04</span> Contact</a>
         </nav>
         <p>WARSAW · PARIS · EVERYWHERE<br />AVAILABLE FOR SELECTED MISSIONS</p>
       </div>
@@ -245,6 +264,34 @@ export default function Home() {
       <div className="ticker" aria-hidden="true">
         <div><span>IDEAS IN MOTION</span> ✦ <span>DESIGNED TO DISTURB</span> ✦ <span>IDEAS IN MOTION</span> ✦ <span>DESIGNED TO DISTURB</span> ✦</div>
       </div>
+
+      <section className={`portrait scroll-reveal ${portraitScan ? "is-scanning" : ""}`} id="portrait">
+        <div className="portrait-head">
+          <span>( VISUAL ARTIFACT / OG-01 )</span>
+          <span>1536 × 1024 · GENERATED IN ORBIT</span>
+        </div>
+        <div className="portrait-intro">
+          <h2>THE FACE OF<br /><em>DIGITAL GRAVITY.</em></h2>
+          <div>
+            <p>Обложка ORBITAL/26 — не декорация, а застывший кадр из нашей цифровой вселенной.</p>
+            <button type="button" onClick={() => setPortraitScan((value) => !value)} aria-pressed={portraitScan}>
+              <i /> {portraitScan ? "DISENGAGE SCAN" : "SCAN THE ARTIFACT"}
+            </button>
+          </div>
+        </div>
+        <div className="portrait-stage" onPointerMove={movePortrait} onPointerLeave={resetPortrait}>
+          <div className="portrait-image" role="img" aria-label="ORBITAL/26 — Digital Gravity, фиолетово-кислотный космический объект">
+            <div className="portrait-glare" aria-hidden="true" />
+            <div className="portrait-scanline" aria-hidden="true" />
+            <div className="portrait-target" aria-hidden="true"><i /><span>GRAVITY<br />LOCKED</span></div>
+          </div>
+          <div className="portrait-data" aria-hidden="true">
+            <span>OBJECT / 001</span>
+            <span>SPECTRUM / UV—ACID</span>
+            <span>STATE / {portraitScan ? "SCANNING" : "DORMANT"}</span>
+          </div>
+        </div>
+      </section>
 
       <section className="lab scroll-reveal" id="lab">
         <div className="lab-head">
