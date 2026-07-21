@@ -179,6 +179,8 @@ footer { position:absolute; bottom:22px; left:28px; right:28px; display:flex; ju
 .portrait-intro button i { width:7px; height:7px; border-radius:50%; background:var(--acid); box-shadow:0 0 0 5px rgba(199,255,47,.1); }
 .portrait-intro button:hover,.portrait-intro button[aria-pressed="true"] { border-color:var(--acid); background:var(--acid); color:var(--ink); transform:translateY(-3px); }
 .portrait-intro button[aria-pressed="true"] i { background:var(--violet); box-shadow:0 0 0 5px rgba(105,68,255,.14); }
+.portrait-enter { display:inline-flex; margin-top:10px; padding:11px 16px; border-bottom:1px solid rgba(240,239,231,.35); color:var(--paper); font-size:8px; letter-spacing:.11em; transition:.3s; }
+.portrait-enter:hover { color:var(--acid); border-color:var(--acid); transform:translateX(6px); }
 .portrait-stage { --portrait-x:50%; --portrait-y:50%; --portrait-rx:0deg; --portrait-ry:0deg; position:relative; width:min(100%,1180px,108svh); margin-inline:auto; perspective:1200px; }
 .portrait-image { position:relative; isolation:isolate; contain:paint; aspect-ratio:1.5; overflow:hidden; border:1px solid rgba(240,239,231,.2); background:url('/og.png') center/cover no-repeat; transform:rotateX(var(--portrait-rx)) rotateY(var(--portrait-ry)) scale(.985); transform-style:preserve-3d; transition:transform .18s ease-out,border-color .6s ease,box-shadow .6s ease; box-shadow:0 45px 120px rgba(0,0,0,.52); }
 .portrait-stage:hover .portrait-image { transform:rotateX(var(--portrait-rx)) rotateY(var(--portrait-ry)) scale(1); border-color:rgba(199,255,47,.5); }
@@ -217,6 +219,10 @@ footer { position:absolute; bottom:22px; left:28px; right:28px; display:flex; ju
 .lab-reading { position:absolute; z-index:5; right:22px; bottom:22px; text-align:right; font-size:8px; color:#777; letter-spacing:.1em; }
 .lab-reading span,.lab-reading b { display:block; }
 .lab-reading b { color:var(--active-soft); font-size:13px; margin-top:5px; }
+.lab-enter { position:absolute; z-index:6; right:22px; top:22px; padding:12px 15px; border:1px solid #4a4a46; border-radius:24px; background:rgba(12,12,11,.72); color:var(--paper); font-size:8px; letter-spacing:.1em; backdrop-filter:blur(8px); transition:.35s; }
+.lab-enter:hover { background:var(--active); border-color:var(--active); color:var(--ink); transform:translateY(-3px); }
+.project-link { display:block; color:inherit; }
+.project-link:focus-visible { outline:2px solid var(--violet); outline-offset:5px; }
 
 .services { background:var(--paper); padding:150px 28px 130px; display:grid; grid-template-columns:1fr 2fr; gap:8vw; }
 .services-intro > span { font-size:9px; letter-spacing:.1em; }
@@ -254,6 +260,8 @@ footer { position:absolute; bottom:22px; left:28px; right:28px; display:flex; ju
 .archive-scrollbar { position:relative; height:28px; margin:20px 28px 0; border-top:1px solid #3f3f3b; cursor:ew-resize; touch-action:none; }
 .archive-scrollbar::before { content:"DRAG / SCROLL"; position:absolute; right:0; top:8px; font-size:7px; letter-spacing:.12em; color:#686861; }
 .archive-scrollbar > div { position:absolute; width:18%; height:4px; top:-2px; left:0; border-radius:3px; background:var(--active); box-shadow:0 0 15px color-mix(in srgb,var(--active) 50%,transparent); transition:transform .12s linear; }
+.archive-enter { display:flex; width:max-content; margin:38px 28px 0 auto; padding:13px 18px; border:1px solid #4a4a46; border-radius:28px; color:var(--paper); font-size:8px; letter-spacing:.11em; transition:.35s; }
+.archive-enter:hover { background:var(--active); color:var(--ink); border-color:var(--active); transform:translateX(-6px); }
 .archive-card { flex:0 0 min(37vw,520px); scroll-snap-align:start; outline:none; }
 .archive-card > span,.archive-card > p { font-size:8px; letter-spacing:.1em; color:#85857d; }
 .archive-art { position:relative; aspect-ratio:1.1; margin:10px 0 16px; overflow:hidden; background:#1b1b18; transition:.5s; }
@@ -301,6 +309,7 @@ footer { position:absolute; bottom:22px; left:28px; right:28px; display:flex; ju
   .lab-controls { left:12px; right:12px; bottom:14px; justify-content:center; }
   .lab-controls button { padding:9px 10px; }
   .lab-reading { top:14px; right:14px; bottom:auto; }
+  .lab-enter { top:58px; right:14px; }
   .services { padding:100px 18px 90px; display:block; }
   .services-intro h2 { margin-top:55px; }
   .services-intro p { margin-bottom:70px; }
@@ -312,6 +321,7 @@ footer { position:absolute; bottom:22px; left:28px; right:28px; display:flex; ju
   .archive-head { margin-inline:18px; }
   .archive-track { padding-inline:18px; }
   .archive-scrollbar { margin-inline:18px; }
+  .archive-enter { margin-right:18px; }
   .archive-card { flex-basis:82vw; }
   .mood-lab { padding:100px 18px; display:block; min-height:auto; }
   .mood-lab h2 { margin:55px 0 80px; }

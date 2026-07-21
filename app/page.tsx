@@ -1,19 +1,20 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 
 const projects = [
-  { no: "01", title: "NEON / OBJECT", type: "Identity + Digital", year: "2026", hue: "lime" },
-  { no: "02", title: "FLUID SIGNAL", type: "Experience + Motion", year: "2026", hue: "violet" },
-  { no: "03", title: "AFTERLIGHT", type: "Strategy + Product", year: "2025", hue: "coral" },
-  { no: "04", title: "SONIC / BLOOM", type: "AI + Interactive", year: "2025", hue: "cyan" },
+  { no: "01", title: "NEON / OBJECT", type: "Identity + Digital", year: "2026", hue: "lime", href: "/projects/neon-object" },
+  { no: "02", title: "FLUID SIGNAL", type: "Experience + Motion", year: "2026", hue: "violet", href: "/projects/fluid-signal" },
+  { no: "03", title: "AFTERLIGHT", type: "Strategy + Product", year: "2025", hue: "coral", href: "/projects/afterlight" },
+  { no: "04", title: "SONIC / BLOOM", type: "AI + Interactive", year: "2025", hue: "cyan", href: "/projects/sonic-bloom" },
 ];
 
 const services = [
-  { no: "01", title: "BRAND SYSTEMS", detail: "Стратегия, позиционирование и визуальный язык, который узнают без логотипа.", tags: "STRATEGY / IDENTITY / VOICE" },
-  { no: "02", title: "DIGITAL WORLDS", detail: "Сайты и продукты, где технология становится частью истории, а не просто оболочкой.", tags: "WEB / PRODUCT / CREATIVE DEV" },
-  { no: "03", title: "MOTION MATTER", detail: "Кинетическая типографика, 3D и motion-системы, превращающие внимание в эмоцию.", tags: "MOTION / 3D / INTERACTION" },
-  { no: "04", title: "FUTURE SIGNALS", detail: "Эксперименты с AI и новыми интерфейсами для брендов, которым тесно в настоящем.", tags: "AI / R&D / INSTALLATIONS" },
+  { no: "01", title: "BRAND SYSTEMS", detail: "Strategy, positioning and a visual language that stays recognizable without a logo.", tags: "STRATEGY / IDENTITY / VOICE" },
+  { no: "02", title: "DIGITAL WORLDS", detail: "Sites and products where technology becomes part of the story, not just its container.", tags: "WEB / PRODUCT / CREATIVE DEV" },
+  { no: "03", title: "MOTION MATTER", detail: "Kinetic typography, 3D and motion systems that turn attention into emotion.", tags: "MOTION / 3D / INTERACTION" },
+  { no: "04", title: "FUTURE SIGNALS", detail: "Experiments with AI and emerging interfaces for brands that have outgrown the present.", tags: "AI / R&D / INSTALLATIONS" },
 ];
 
 const archive = ["TOKYO TYPE", "SUBZERO", "LOST SIGNAL", "MARS/01", "NIGHTSHIFT", "KINETIC FM"];
@@ -191,7 +192,7 @@ export default function Home() {
     syncArchiveProgress();
   };
 
-  const scrollToWork = () => document.querySelector("#work")?.scrollIntoView({ behavior: "smooth" });
+  const scrollToNext = () => document.querySelector("#portrait")?.scrollIntoView({ behavior: "smooth" });
 
   const movePortrait = (event: React.PointerEvent<HTMLDivElement>) => {
     const rect = event.currentTarget.getBoundingClientRect();
@@ -218,7 +219,7 @@ export default function Home() {
       <div className="grain" aria-hidden="true" />
 
       <header className="nav">
-        <a className="brand" href="#top" aria-label="Orbital, на главную">
+        <a className="brand" href="#top" aria-label="Orbital, back to top">
           <span className="brand-mark">O/</span>
           <span>ORBITAL<br />SYSTEMS</span>
         </a>
@@ -253,8 +254,8 @@ export default function Home() {
           <span className="orbit-label">DRAG YOUR REALITY · DRAG YOUR REALITY ·</span>
         </div>
         <div className="hero-bottom reveal">
-          <p>СТРАТЕГИЯ, ДИЗАЙН И ТЕХНОЛОГИИ<br />ДЛЯ БРЕНДОВ, КОТОРЫЕ НЕ БОЯТСЯ<br />ПРИТЯГИВАТЬ ВНИМАНИЕ.</p>
-          <button className="round-button magnetic" onClick={scrollToWork} aria-label="Смотреть проекты">
+          <p>STRATEGY, DESIGN AND TECHNOLOGY<br />FOR BRANDS THAT ARE NOT AFRAID<br />TO PULL ATTENTION INTO ORBIT.</p>
+          <button className="round-button magnetic" onClick={scrollToNext} aria-label="Explore the next section">
             <span>EXPLORE<br />THE ORBIT</span><b>↓</b>
           </button>
           <div className="coordinates">52.2297° N<br />21.0122° E</div>
@@ -273,14 +274,15 @@ export default function Home() {
         <div className="portrait-intro">
           <h2>THE FACE OF<br /><em>DIGITAL GRAVITY.</em></h2>
           <div>
-            <p>Обложка ORBITAL/26 — не декорация, а застывший кадр из нашей цифровой вселенной.</p>
+            <p>The ORBITAL/26 cover is not decoration. It is a frozen frame from our digital universe.</p>
             <button type="button" onClick={() => setPortraitScan((value) => !value)} aria-pressed={portraitScan}>
               <i /> {portraitScan ? "DISENGAGE SCAN" : "SCAN THE ARTIFACT"}
             </button>
+            <Link className="portrait-enter" href="/artifact">ENTER THE VOID ↗</Link>
           </div>
         </div>
         <div className="portrait-stage" onPointerMove={movePortrait} onPointerLeave={resetPortrait}>
-          <div className="portrait-image" role="img" aria-label="ORBITAL/26 — Digital Gravity, фиолетово-кислотный космический объект">
+          <div className="portrait-image" role="img" aria-label="ORBITAL/26 Digital Gravity ultraviolet and acid space object">
             <div className="portrait-glare" aria-hidden="true" />
             <div className="portrait-scanline" aria-hidden="true" />
             <div className="portrait-target" aria-hidden="true"><i /><span>GRAVITY<br />LOCKED</span></div>
@@ -296,12 +298,12 @@ export default function Home() {
       <section className="lab scroll-reveal" id="lab">
         <div className="lab-head">
           <span>( 01 — INTERACTION LAB )</span>
-          <p>Проведите курсором через поле.<br />Выберите закон цифровой физики.</p>
+          <p>Move through the field.<br />Choose a law of digital physics.</p>
         </div>
         <div className={`lab-stage mode-${labMode}`}>
-          <canvas ref={canvasRef} aria-label="Интерактивное поле частиц" />
+          <canvas ref={canvasRef} aria-label="Interactive particle field" />
           <div className="lab-title"><span>TOUCH THE</span><strong>SIGNAL</strong></div>
-          <div className="lab-controls" role="group" aria-label="Режим движения частиц">
+          <div className="lab-controls" role="group" aria-label="Particle movement mode">
             {(["attract", "repel", "vortex"] as const).map((mode) => (
               <button key={mode} onClick={() => setLabMode(mode)} className={labMode === mode ? "active" : ""}>
                 <i /> {mode.toUpperCase()}
@@ -309,24 +311,27 @@ export default function Home() {
             ))}
           </div>
           <div className="lab-reading"><span>FIELD / {labMode.toUpperCase()}</span><b>{String(68 + time % 29).padStart(3, "0")}.04 Hz</b></div>
+          <Link className="lab-enter" href="/signal-lab">OPEN FULL LAB ↗</Link>
         </div>
       </section>
 
       <section className="work" id="work">
         <div className="section-head">
           <span>( 02 — SELECTED SIGNALS )</span>
-          <p>Избранные эксперименты<br />на пересечении формы и функции.</p>
+          <p>Selected experiments<br />where form collides with function.</p>
         </div>
         <div className="project-grid">
           {projects.map((project) => (
-            <article className={`project-card ${project.hue}`} key={project.no} tabIndex={0}>
-              <div className="project-meta"><span>{project.no}</span><span>{project.type}</span><span>{project.year}</span></div>
-              <div className="project-visual">
-                <div className="shape shape-a" /><div className="shape shape-b" /><div className="scanlines" />
-                <span className="view-label">VIEW CASE ↗</span>
-              </div>
-              <h2>{project.title}</h2>
-            </article>
+            <Link className="project-link" href={project.href} key={project.no}>
+              <article className={`project-card ${project.hue}`} tabIndex={0}>
+                <div className="project-meta"><span>{project.no}</span><span>{project.type}</span><span>{project.year}</span></div>
+                <div className="project-visual">
+                  <div className="shape shape-a" /><div className="shape shape-b" /><div className="scanlines" />
+                  <span className="view-label">ENTER WORLD ↗</span>
+                </div>
+                <h2>{project.title}</h2>
+              </article>
+            </Link>
           ))}
         </div>
       </section>
@@ -335,7 +340,7 @@ export default function Home() {
         <div className="services-intro">
           <span>( 03 — CAPABILITIES )</span>
           <h2>ONE STUDIO.<br /><em>NO FIXED ORBIT.</em></h2>
-          <p>Собираем команды под задачу — от одной сильной идеи до запуска цифровой экосистемы.</p>
+          <p>We assemble the right team for every mission — from one sharp idea to a complete digital ecosystem.</p>
         </div>
         <div className="service-list">
           {services.map((service, index) => (
@@ -350,26 +355,26 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="numbers scroll-reveal" aria-label="Статистика студии">
-        <div><strong>42</strong><span>МИРА ЗАПУЩЕНО</span></div>
-        <div><strong>11</strong><span>ЧАСОВЫХ ПОЯСОВ</span></div>
-        <div><strong>∞</strong><span>ВОЗМОЖНЫХ ОРБИТ</span></div>
-        <div><strong>01</strong><span>ОБЩАЯ МИССИЯ</span></div>
+      <section className="numbers scroll-reveal" aria-label="Studio statistics">
+        <div><strong>42</strong><span>WORLDS LAUNCHED</span></div>
+        <div><strong>11</strong><span>TIME ZONES</span></div>
+        <div><strong>∞</strong><span>POSSIBLE ORBITS</span></div>
+        <div><strong>01</strong><span>SHARED MISSION</span></div>
       </section>
 
       <section className="manifesto" id="about">
         <div className="manifesto-index">( 04 — OUR SIGNAL )</div>
         <p>
-          МЫ НЕ ДЕЛАЕМ<br />
-          <span>«ПРОСТО КРАСИВО».</span><br />
-          МЫ СОЗДАЁМ ЦИФРОВЫЕ<br />
-          <span>МИРЫ С ХАРАКТЕРОМ.</span>
+          WE DO NOT MAKE<br />
+          <span>“JUST PRETTY.”</span><br />
+          WE BUILD DIGITAL<br />
+          <span>WORLDS WITH A PULSE.</span>
         </p>
-        <div className="manifesto-note">Каждый пиксель должен<br />иметь причину двигаться.</div>
+        <div className="manifesto-note">Every pixel needs<br />a reason to move.</div>
       </section>
 
       <section className="archive scroll-reveal">
-        <div className="archive-head"><span>( 05 — EXTENDED ARCHIVE )</span><p>ПЕРЕТАСКИВАЙТЕ →</p></div>
+        <div className="archive-head"><span>( 05 — EXTENDED ARCHIVE )</span><p>DRAG TO NAVIGATE →</p></div>
         <div
           className="archive-track"
           ref={archiveRef}
@@ -391,18 +396,19 @@ export default function Home() {
         </div>
         <div
           className="archive-scrollbar"
-          aria-label="Прокрутка архива"
+          aria-label="Archive navigation"
           onPointerDown={(event) => { event.currentTarget.setPointerCapture(event.pointerId); scrubArchive(event); }}
           onPointerMove={(event) => { if (event.currentTarget.hasPointerCapture(event.pointerId)) scrubArchive(event); }}
           onPointerUp={(event) => { if (event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId); }}
         >
           <div style={{ transform: `translateX(${archiveProgress * 455}%)` }} />
         </div>
+        <Link className="archive-enter" href="/archive">ENTER ARCHIVE TRANSMISSION ↗</Link>
       </section>
 
       <section className="mood-lab scroll-reveal">
         <div><span>( 06 — TUNE THE FREQUENCY )</span><h2>CHOOSE YOUR<br /><em>GRAVITY.</em></h2></div>
-        <div className="mood-switcher" role="group" aria-label="Цветовой режим сайта">
+        <div className="mood-switcher" role="group" aria-label="Site color mode">
           {(["ultraviolet", "solar", "infra"] as const).map((item, index) => (
             <button key={item} className={mood === item ? "active" : ""} onClick={() => setMood(item)}>
               <span>0{index + 1}</span><strong>{item.toUpperCase()}</strong><i />
@@ -413,7 +419,7 @@ export default function Home() {
 
       <section className="contact" id="contact">
         <div className="contact-orbit" aria-hidden="true"><span>LET&apos;S MAKE IT REAL · </span></div>
-        <p>ЕСТЬ ИДЕЯ ИЛИ ТОЛЬКО ИСКРА?</p>
+        <p>HAVE AN IDEA — OR ONLY A SPARK?</p>
         <a href="mailto:hello@orbital.fake">LET&apos;S TALK <span>↗</span></a>
         <footer><span>ORBITAL © 2026</span><span>BEYOND THE OBVIOUS</span><a href="#top">BACK TO TOP ↑</a></footer>
       </section>

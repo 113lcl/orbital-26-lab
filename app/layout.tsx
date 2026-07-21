@@ -5,7 +5,9 @@ import {
   chatGPTSignOutPath,
   getChatGPTUser,
 } from "./chatgpt-auth";
+import AmbientPlayer from "./components/AmbientPlayer";
 import "./globals.css";
+import "./experiences.css";
 
 export const dynamic = "force-dynamic";
 
@@ -49,17 +51,17 @@ function AccessPortal() {
 
       <section className="access-card">
         <div className="access-index">( ACCESS / 001 )</div>
-        <p className="access-kicker">ВХОД В ЦИФРОВУЮ ОРБИТУ</p>
+        <p className="access-kicker">ENTER THE DIGITAL ORBIT</p>
         <h1>YOUR<br /><em>SIGNAL</em><br />IS WELCOME</h1>
         <p className="access-copy">
-          Войдите или создайте аккаунт с помощью email. Почта подтверждается
-          через защищённый вход OpenAI — пароль не передаётся сайту.
+          Sign in or create an account with your email. Authentication is handled
+          securely by OpenAI — your password is never shared with this site.
         </p>
         <a className="access-primary" href={signInPath}>
-          <span>ПРОДОЛЖИТЬ ПО EMAIL</span><b>↗</b>
+          <span>CONTINUE WITH EMAIL</span><b>↗</b>
         </a>
         <div className="access-footnote">
-          <span>NEW HERE? РЕГИСТРАЦИЯ ДОСТУПНА НА СЛЕДУЮЩЕМ ШАГЕ</span>
+          <span>NEW HERE? CREATE YOUR ACCOUNT ON THE NEXT STEP</span>
           <span>ENCRYPTED / 2026</span>
         </div>
       </section>
@@ -74,20 +76,21 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
   const isLocalPreview = host.startsWith("localhost:") || host.startsWith("127.0.0.1:");
 
   if (!user && !isLocalPreview) {
-    return <html lang="ru"><body><AccessPortal /></body></html>;
+    return <html lang="en"><body><AccessPortal /></body></html>;
   }
 
   return (
-    <html lang="ru">
+    <html lang="en">
       <body>
         {user && (
           <div className="auth-account">
             <span className="auth-dot" />
             <span className="auth-email">{user.email}</span>
-            <a href={chatGPTSignOutPath("/")}>ВЫЙТИ</a>
+            <a href={chatGPTSignOutPath("/")}>SIGN OUT</a>
           </div>
         )}
         {children}
+        <AmbientPlayer />
       </body>
     </html>
   );
