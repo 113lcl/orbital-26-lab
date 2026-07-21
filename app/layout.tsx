@@ -65,19 +65,24 @@ function AccessPortal() {
 
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const user = await getChatGPTUser();
+  const requestHeaders = await headers();
+  const host = requestHeaders.get("host") ?? "";
+  const isLocalPreview = host.startsWith("localhost:") || host.startsWith("127.0.0.1:");
 
-  if (!user) {
+  if (!user && !isLocalPreview) {
     return <html lang="ru"><body><AccessPortal /></body></html>;
   }
 
   return (
     <html lang="ru">
       <body>
-        <div className="auth-account">
-          <span className="auth-dot" />
-          <span className="auth-email">{user.email}</span>
-          <a href={chatGPTSignOutPath("/")}>ВЫЙТИ</a>
-        </div>
+        {user && (
+          <div className="auth-account">
+            <span className="auth-dot" />
+            <span className="auth-email">{user.email}</span>
+            <a href={chatGPTSignOutPath("/")}>ВЫЙТИ</a>
+          </div>
+        )}
         {children}
       </body>
     </html>

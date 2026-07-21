@@ -265,7 +265,7 @@ export default function Home() {
         <div><span>IDEAS IN MOTION</span> ✦ <span>DESIGNED TO DISTURB</span> ✦ <span>IDEAS IN MOTION</span> ✦ <span>DESIGNED TO DISTURB</span> ✦</div>
       </div>
 
-      <section className={`portrait scroll-reveal ${portraitScan ? "is-scanning" : ""}`} id="portrait">
+      <section className={`portrait ${portraitScan ? "is-scanning" : ""}`} id="portrait">
         <div className="portrait-head">
           <span>( VISUAL ARTIFACT / OG-01 )</span>
           <span>1536 × 1024 · GENERATED IN ORBIT</span>
