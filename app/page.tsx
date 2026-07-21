@@ -224,7 +224,6 @@ export default function Home() {
     <main className={`${loaded ? "site is-loaded" : "site"} mood-${mood}`}>
       <div className="scroll-progress" aria-hidden="true" />
       <div className="cursor-glow" aria-hidden="true" />
-      <div className="cursor-ring" aria-hidden="true"><span>MOVE</span></div>
       <div className="grain" aria-hidden="true" />
 
       <header className="nav">
@@ -386,6 +385,7 @@ export default function Home() {
         <div className="archive-head"><span>( 05 — EXTENDED ARCHIVE )</span><p>DRAG TO NAVIGATE →</p></div>
         <div
           className="archive-track"
+          data-cursor="DRAG"
           ref={archiveRef}
           onPointerDown={beginArchiveDrag}
           onPointerMove={moveArchiveDrag}
@@ -405,6 +405,7 @@ export default function Home() {
         </div>
         <div
           className="archive-scrollbar"
+          data-cursor="SCRUB"
           aria-label="Archive navigation"
           onPointerDown={(event) => { event.currentTarget.setPointerCapture(event.pointerId); scrubArchive(event); }}
           onPointerMove={(event) => { if (event.currentTarget.hasPointerCapture(event.pointerId)) scrubArchive(event); }}

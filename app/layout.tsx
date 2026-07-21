@@ -6,6 +6,7 @@ import {
   getChatGPTUser,
 } from "./chatgpt-auth";
 import AmbientPlayer from "./components/AmbientPlayer";
+import CustomCursor from "./components/CustomCursor";
 import "./globals.css";
 import "./experiences.css";
 
@@ -76,7 +77,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
   const isLocalPreview = host.startsWith("localhost:") || host.startsWith("127.0.0.1:");
 
   if (!user && !isLocalPreview) {
-    return <html lang="en"><body><AccessPortal /></body></html>;
+    return <html lang="en"><body><AccessPortal /><CustomCursor /></body></html>;
   }
 
   return (
@@ -91,6 +92,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
         )}
         {children}
         <AmbientPlayer />
+        <CustomCursor />
       </body>
     </html>
   );
