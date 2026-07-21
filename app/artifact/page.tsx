@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import ExperienceNav from "../components/ExperienceNav";
-import DigitalGravityPlanet from "../components/DigitalGravityPlanet";
+import GravitySingularity from "../components/GravitySingularity";
 
 export default function ArtifactExperience() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -60,7 +60,7 @@ export default function ArtifactExperience() {
       <ExperienceNav index="00" label="VISUAL ARTIFACT" />
       <canvas ref={canvasRef} aria-hidden="true" />
       <div className="artifact-nebula" aria-hidden="true" />
-      <DigitalGravityPlanet collapsed={phase === "collapse"} />
+      <GravitySingularity collapsed={phase === "collapse"} />
       <div className="artifact-copy">
         <span>OBJECT / OG—01</span>
         <h1>DIGITAL<br /><em>GRAVITY</em></h1>
