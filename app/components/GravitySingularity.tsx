@@ -90,7 +90,7 @@ export default function GravitySingularity({ collapsed }: GravitySingularityProp
       profile,
       angle: index * 2.399963,
       orbit: 0.29 + (index % 6) * 0.085,
-      speed: (0.0008 + (index % 5) * 0.00025) * (index % 4 === 0 ? -1 : 1),
+      speed: 0.0008 + (index % 5) * 0.00025,
       x: 0,
       y: 0,
     }));
