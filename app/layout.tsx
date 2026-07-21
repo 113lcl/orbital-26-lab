@@ -19,6 +19,10 @@ export async function generateMetadata(): Promise<Metadata> {
     title: "ORBITAL/26 — Digital Gravity",
     description: "Independent creative lab shaping digital worlds with gravity.",
     metadataBase: new URL(origin),
+    icons: {
+      icon: [{ url: "/favicon.svg", type: "image/svg+xml" }],
+      shortcut: "/favicon.svg",
+    },
     openGraph: {
       title: "ORBITAL/26 — Digital Gravity",
       description: "Independent creative lab shaping digital worlds with gravity.",
