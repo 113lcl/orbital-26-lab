@@ -8,11 +8,24 @@ const projects = [
   { no: "03", title: "AFTERLIGHT", type: "Strategy + Product", year: "2025", hue: "coral" },
 ];
 
+const services = [
+  { no: "01", title: "BRAND SYSTEMS", detail: "Стратегия, позиционирование и визуальный язык, который узнают без логотипа.", tags: "STRATEGY / IDENTITY / VOICE" },
+  { no: "02", title: "DIGITAL WORLDS", detail: "Сайты и продукты, где технология становится частью истории, а не просто оболочкой.", tags: "WEB / PRODUCT / CREATIVE DEV" },
+  { no: "03", title: "MOTION MATTER", detail: "Кинетическая типографика, 3D и motion-системы, превращающие внимание в эмоцию.", tags: "MOTION / 3D / INTERACTION" },
+  { no: "04", title: "FUTURE SIGNALS", detail: "Эксперименты с AI и новыми интерфейсами для брендов, которым тесно в настоящем.", tags: "AI / R&D / INSTALLATIONS" },
+];
+
+const archive = ["TOKYO TYPE", "SUBZERO", "LOST SIGNAL", "MARS/01", "NIGHTSHIFT", "KINETIC FM"];
+
 export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const [time, setTime] = useState(0);
+  const [labMode, setLabMode] = useState<"attract" | "repel" | "drift">("attract");
+  const [activeService, setActiveService] = useState(0);
+  const [mood, setMood] = useState<"ultraviolet" | "solar" | "infra">("ultraviolet");
   const orbRef = useRef<HTMLDivElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
     const intro = window.setTimeout(() => setLoaded(true), 220);
@@ -26,19 +39,107 @@ export default function Home() {
         orbRef.current.style.transform = `translate3d(${x}px, ${y}px, 0) rotate(${x * 0.4}deg)`;
       }
     };
+    const scroll = () => {
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      document.documentElement.style.setProperty("--scroll", `${max > 0 ? (window.scrollY / max) * 100 : 0}%`);
+    };
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => entry.isIntersecting && entry.target.classList.add("in-view"));
+    }, { threshold: 0.16 });
+    document.querySelectorAll(".scroll-reveal").forEach((element) => observer.observe(element));
     window.addEventListener("pointermove", move, { passive: true });
+    window.addEventListener("scroll", scroll, { passive: true });
     return () => {
       window.clearTimeout(intro);
       window.clearInterval(clock);
       window.removeEventListener("pointermove", move);
+      window.removeEventListener("scroll", scroll);
+      observer.disconnect();
     };
   }, []);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const context = canvas.getContext("2d");
+    if (!context) return;
+
+    let frame = 0;
+    let width = 0;
+    let height = 0;
+    const pointer = { x: -9999, y: -9999 };
+    const particles = Array.from({ length: 92 }, (_, index) => ({
+      x: Math.random(), y: Math.random(),
+      vx: (Math.random() - .5) * .35, vy: (Math.random() - .5) * .35,
+      radius: index % 13 === 0 ? 3.2 : Math.random() * 1.8 + .7,
+    }));
+    const resize = () => {
+      const rect = canvas.getBoundingClientRect();
+      const ratio = Math.min(window.devicePixelRatio, 2);
+      width = rect.width; height = rect.height;
+      canvas.width = width * ratio; canvas.height = height * ratio;
+      context.setTransform(ratio, 0, 0, ratio, 0, 0);
+    };
+    const move = (event: PointerEvent) => {
+      const rect = canvas.getBoundingClientRect();
+      pointer.x = event.clientX - rect.left; pointer.y = event.clientY - rect.top;
+    };
+    const leave = () => { pointer.x = -9999; pointer.y = -9999; };
+    const render = () => {
+      context.clearRect(0, 0, width, height);
+      particles.forEach((particle, index) => {
+        const px = particle.x * width;
+        const py = particle.y * height;
+        const dx = pointer.x - px;
+        const dy = pointer.y - py;
+        const distance = Math.max(Math.sqrt(dx * dx + dy * dy), 35);
+        if (distance < 220 && labMode !== "drift") {
+          const force = (1 - distance / 220) * (labMode === "attract" ? 0.026 : -0.045);
+          particle.vx += (dx / distance) * force;
+          particle.vy += (dy / distance) * force;
+        }
+        particle.vx *= .988; particle.vy *= .988;
+        particle.x += particle.vx / Math.max(width, 1);
+        particle.y += particle.vy / Math.max(height, 1);
+        if (particle.x < 0 || particle.x > 1) particle.vx *= -1;
+        if (particle.y < 0 || particle.y > 1) particle.vy *= -1;
+        particle.x = Math.max(0, Math.min(1, particle.x));
+        particle.y = Math.max(0, Math.min(1, particle.y));
+        context.beginPath();
+        context.fillStyle = index % 7 === 0 ? "#c7ff2f" : index % 3 === 0 ? "#8b6cff" : "rgba(240,239,231,.72)";
+        context.arc(particle.x * width, particle.y * height, particle.radius, 0, Math.PI * 2);
+        context.fill();
+        particles.slice(index + 1, index + 7).forEach((other) => {
+          const ox = other.x * width; const oy = other.y * height;
+          const lineDistance = Math.hypot(ox - particle.x * width, oy - particle.y * height);
+          if (lineDistance < 95) {
+            context.beginPath();
+            context.strokeStyle = `rgba(199,255,47,${(1 - lineDistance / 95) * .16})`;
+            context.moveTo(particle.x * width, particle.y * height); context.lineTo(ox, oy); context.stroke();
+          }
+        });
+      });
+      frame = requestAnimationFrame(render);
+    };
+    resize(); render();
+    window.addEventListener("resize", resize);
+    canvas.addEventListener("pointermove", move);
+    canvas.addEventListener("pointerleave", leave);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("resize", resize);
+      canvas.removeEventListener("pointermove", move);
+      canvas.removeEventListener("pointerleave", leave);
+    };
+  }, [labMode]);
 
   const scrollToWork = () => document.querySelector("#work")?.scrollIntoView({ behavior: "smooth" });
 
   return (
-    <main className={loaded ? "site is-loaded" : "site"}>
+    <main className={`${loaded ? "site is-loaded" : "site"} mood-${mood}`}>
+      <div className="scroll-progress" aria-hidden="true" />
       <div className="cursor-glow" aria-hidden="true" />
+      <div className="cursor-ring" aria-hidden="true"><span>MOVE</span></div>
       <div className="grain" aria-hidden="true" />
 
       <header className="nav">
@@ -88,9 +189,28 @@ export default function Home() {
         <div><span>IDEAS IN MOTION</span> ✦ <span>DESIGNED TO DISTURB</span> ✦ <span>IDEAS IN MOTION</span> ✦ <span>DESIGNED TO DISTURB</span> ✦</div>
       </div>
 
+      <section className="lab scroll-reveal" id="lab">
+        <div className="lab-head">
+          <span>( 01 — INTERACTION LAB )</span>
+          <p>Проведите курсором через поле.<br />Выберите закон цифровой физики.</p>
+        </div>
+        <div className="lab-stage">
+          <canvas ref={canvasRef} aria-label="Интерактивное поле частиц" />
+          <div className="lab-title"><span>TOUCH THE</span><strong>SIGNAL</strong></div>
+          <div className="lab-controls" role="group" aria-label="Режим движения частиц">
+            {(["attract", "repel", "drift"] as const).map((mode) => (
+              <button key={mode} onClick={() => setLabMode(mode)} className={labMode === mode ? "active" : ""}>
+                <i /> {mode.toUpperCase()}
+              </button>
+            ))}
+          </div>
+          <div className="lab-reading"><span>FIELD / {labMode.toUpperCase()}</span><b>{String(68 + time % 29).padStart(3, "0")}.04 Hz</b></div>
+        </div>
+      </section>
+
       <section className="work" id="work">
         <div className="section-head">
-          <span>( 01 — SELECTED SIGNALS )</span>
+          <span>( 02 — SELECTED SIGNALS )</span>
           <p>Избранные эксперименты<br />на пересечении формы и функции.</p>
         </div>
         <div className="project-grid">
@@ -107,8 +227,34 @@ export default function Home() {
         </div>
       </section>
 
+      <section className="services scroll-reveal" id="services">
+        <div className="services-intro">
+          <span>( 03 — CAPABILITIES )</span>
+          <h2>ONE STUDIO.<br /><em>NO FIXED ORBIT.</em></h2>
+          <p>Собираем команды под задачу — от одной сильной идеи до запуска цифровой экосистемы.</p>
+        </div>
+        <div className="service-list">
+          {services.map((service, index) => (
+            <button className={`service-row ${activeService === index ? "active" : ""}`} key={service.no} onClick={() => setActiveService(index)} aria-expanded={activeService === index}>
+              <span className="service-no">{service.no}</span>
+              <strong>{service.title}</strong>
+              <span className="service-toggle">{activeService === index ? "−" : "+"}</span>
+              <span className="service-detail">{service.detail}</span>
+              <span className="service-tags">{service.tags}</span>
+            </button>
+          ))}
+        </div>
+      </section>
+
+      <section className="numbers scroll-reveal" aria-label="Статистика студии">
+        <div><strong>42</strong><span>МИРА ЗАПУЩЕНО</span></div>
+        <div><strong>11</strong><span>ЧАСОВЫХ ПОЯСОВ</span></div>
+        <div><strong>∞</strong><span>ВОЗМОЖНЫХ ОРБИТ</span></div>
+        <div><strong>01</strong><span>ОБЩАЯ МИССИЯ</span></div>
+      </section>
+
       <section className="manifesto" id="about">
-        <div className="manifesto-index">( 02 — OUR SIGNAL )</div>
+        <div className="manifesto-index">( 04 — OUR SIGNAL )</div>
         <p>
           МЫ НЕ ДЕЛАЕМ<br />
           <span>«ПРОСТО КРАСИВО».</span><br />
@@ -116,6 +262,31 @@ export default function Home() {
           <span>МИРЫ С ХАРАКТЕРОМ.</span>
         </p>
         <div className="manifesto-note">Каждый пиксель должен<br />иметь причину двигаться.</div>
+      </section>
+
+      <section className="archive scroll-reveal">
+        <div className="archive-head"><span>( 05 — EXTENDED ARCHIVE )</span><p>ПЕРЕТАСКИВАЙТЕ →</p></div>
+        <div className="archive-track">
+          {archive.map((item, index) => (
+            <article className={`archive-card archive-${index + 1}`} key={item} tabIndex={0}>
+              <span>0{index + 4} / {2026 - index}</span>
+              <div className="archive-art"><i /><b /></div>
+              <h3>{item}</h3>
+              <p>EXPERIMENTAL / DIGITAL</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="mood-lab scroll-reveal">
+        <div><span>( 06 — TUNE THE FREQUENCY )</span><h2>CHOOSE YOUR<br /><em>GRAVITY.</em></h2></div>
+        <div className="mood-switcher" role="group" aria-label="Цветовой режим сайта">
+          {(["ultraviolet", "solar", "infra"] as const).map((item, index) => (
+            <button key={item} className={mood === item ? "active" : ""} onClick={() => setMood(item)}>
+              <span>0{index + 1}</span><strong>{item.toUpperCase()}</strong><i />
+            </button>
+          ))}
+        </div>
       </section>
 
       <section className="contact" id="contact">
