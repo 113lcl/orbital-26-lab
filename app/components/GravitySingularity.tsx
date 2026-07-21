@@ -37,6 +37,24 @@ const signalProfiles: SignalProfile[] = [
   { id: "S-05", name: "ULTRA-13", color: "#a46cff", temperature: "+704 °C", gravity: "3.72 G", orbit: "008 HOURS", atmosphere: "PLASMA VEIL", status: "CRITICAL" },
   { id: "S-06", name: "CYAN SLEEP", color: "#65ddff", temperature: "−109 °C", gravity: "0.67 G", orbit: "188 DAYS", atmosphere: "LIQUID SKY", status: "DREAMING" },
   { id: "S-07", name: "EMBER ZERO", color: "#ff8a35", temperature: "+96 °C", gravity: "1.44 G", orbit: "054 DAYS", atmosphere: "CARBON RAIN", status: "AWAKE" },
+  { id: "S-08", name: "ORBIT DUST", color: "#8070ff", temperature: "−143 °C", gravity: "0.45 G", orbit: "271 DAYS", atmosphere: "VIOLET ASH", status: "DRIFTING" },
+  { id: "S-09", name: "KORA / 88", color: "#f6d84a", temperature: "+18 °C", gravity: "0.98 G", orbit: "337 DAYS", atmosphere: "SULFUR BLOOM", status: "BREATHING" },
+  { id: "S-10", name: "MUTE SUN", color: "#d8d5c8", temperature: "+1280 °C", gravity: "8.09 G", orbit: "LOCKED", atmosphere: "WHITE FIRE", status: "SILENT" },
+  { id: "S-11", name: "VEIL / 22", color: "#b14cff", temperature: "−33 °C", gravity: "1.23 G", orbit: "076 DAYS", atmosphere: "ARGON VEIL", status: "HIDDEN" },
+  { id: "S-12", name: "ROSE STATIC", color: "#ff4f91", temperature: "+57 °C", gravity: "0.73 G", orbit: "021 DAYS", atmosphere: "PINK STATIC", status: "TRANSMITTING" },
+  { id: "S-13", name: "HEXA MOON", color: "#9fa7b8", temperature: "−201 °C", gravity: "0.19 G", orbit: "014 HOURS", atmosphere: "NONE", status: "FRACTURED" },
+  { id: "S-14", name: "COBALT WELL", color: "#356dff", temperature: "−78 °C", gravity: "4.61 G", orbit: "593 DAYS", atmosphere: "BLUE METAL", status: "DEEPENING" },
+  { id: "S-15", name: "AMBER TIDE", color: "#ffb02e", temperature: "+73 °C", gravity: "1.08 G", orbit: "149 DAYS", atmosphere: "GOLDEN FOG", status: "RISING" },
+  { id: "S-16", name: "NULL PETAL", color: "#cec4ff", temperature: "−256 °C", gravity: "0.03 G", orbit: "UNKNOWN", atmosphere: "VOID POLLEN", status: "ABSENT" },
+  { id: "S-17", name: "IO SHADE", color: "#7542c9", temperature: "+302 °C", gravity: "2.17 G", orbit: "006 DAYS", atmosphere: "DARK HELIUM", status: "ECLIPSED" },
+  { id: "S-18", name: "FROST BITE", color: "#a9efff", temperature: "−174 °C", gravity: "0.91 G", orbit: "245 DAYS", atmosphere: "ICE NEEDLES", status: "FROZEN" },
+  { id: "S-19", name: "SOLAR GHOST", color: "#e9ff66", temperature: "+622 °C", gravity: "3.05 G", orbit: "017 HOURS", atmosphere: "PHOTON DUST", status: "FADING" },
+  { id: "S-20", name: "QUIET MASS", color: "#777b86", temperature: "−89 °C", gravity: "12.6 G", orbit: "STATIC", atmosphere: "HEAVY SILENCE", status: "WATCHING" },
+  { id: "S-21", name: "RED ECHO", color: "#ff334f", temperature: "+116 °C", gravity: "1.62 G", orbit: "089 DAYS", atmosphere: "RUST SIGNAL", status: "REPEATING" },
+  { id: "S-22", name: "AURORA / 5", color: "#53ffa7", temperature: "−12 °C", gravity: "0.76 G", orbit: "311 DAYS", atmosphere: "LIVING LIGHT", status: "SINGING" },
+  { id: "S-23", name: "VOID PEARL", color: "#f0e8ff", temperature: "−229 °C", gravity: "5.44 G", orbit: "907 DAYS", atmosphere: "BLACK WATER", status: "SEALED" },
+  { id: "S-24", name: "TWINLESS", color: "#ec60ff", temperature: "+4 °C", gravity: "1.00 G", orbit: "365 DAYS", atmosphere: "OXYGEN TRACE", status: "SEARCHING" },
+  { id: "S-25", name: "LAST LIGHT", color: "#c7ff2f", temperature: "+222 °C", gravity: "2.88 G", orbit: "001 DAY", atmosphere: "ACID FLARE", status: "DEPARTING" },
 ];
 
 export default function GravitySingularity({ collapsed }: GravitySingularityProps) {
@@ -70,9 +88,9 @@ export default function GravitySingularity({ collapsed }: GravitySingularityProp
     const startedAt = performance.now();
     const signalNodes = signalProfiles.map((profile, index) => ({
       profile,
-      angle: (Math.PI * 2 * index) / signalProfiles.length + index * 0.31,
-      orbit: 0.38 + (index % 4) * 0.105,
-      speed: 0.0012 + (index % 3) * 0.0005,
+      angle: index * 2.399963,
+      orbit: 0.29 + (index % 6) * 0.085,
+      speed: (0.0008 + (index % 5) * 0.00025) * (index % 4 === 0 ? -1 : 1),
       x: 0,
       y: 0,
     }));
@@ -122,7 +140,7 @@ export default function GravitySingularity({ collapsed }: GravitySingularityProp
       pointerY = event.clientY - rect.top;
       pointerInside = true;
       let nearest = -1;
-      let nearestDistance = 22;
+      let nearestDistance = 18;
       signalNodes.forEach((node, index) => {
         const distance = Math.hypot(pointerX - node.x, pointerY - node.y);
         if (distance < nearestDistance) {
@@ -216,18 +234,18 @@ export default function GravitySingularity({ collapsed }: GravitySingularityProp
         context.strokeStyle = active ? "rgba(255,255,255,.9)" : `${node.profile.color}88`;
         context.lineWidth = active ? 1.5 : 0.8;
         context.beginPath();
-        context.arc(node.x, node.y, active ? 14 : 9, 0, Math.PI * 2);
+        context.arc(node.x, node.y, active ? 13 : 6.5, 0, Math.PI * 2);
         context.stroke();
         context.fillStyle = node.profile.color;
         context.shadowColor = node.profile.color;
         context.shadowBlur = active ? 28 : 14;
         context.beginPath();
-        context.arc(node.x, node.y, active ? 5.5 : 3.8, 0, Math.PI * 2);
+        context.arc(node.x, node.y, active ? 5.2 : 2.7, 0, Math.PI * 2);
         context.fill();
         context.shadowBlur = 0;
         context.globalCompositeOperation = "source-over";
         context.fillStyle = active ? "rgba(240,239,231,.95)" : "rgba(156,154,170,.7)";
-        context.fillText(active ? node.profile.name : node.profile.id, node.x, node.y - (active ? 20 : 14));
+        if (active) context.fillText(node.profile.name, node.x, node.y - 19);
       });
       context.restore();
     };
