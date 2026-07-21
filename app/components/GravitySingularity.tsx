@@ -84,6 +84,7 @@ export default function GravitySingularity({ collapsed }: GravitySingularityProp
     let pointerInside = false;
     let burst = 0;
     let energy = 1;
+    let flowMomentum = 1;
     let hoveredSignal = -1;
     const startedAt = performance.now();
     const signalNodes = signalProfiles.map((profile, index) => ({
@@ -267,6 +268,9 @@ export default function GravitySingularity({ collapsed }: GravitySingularityProp
       const time = (now - startedAt) / 1000;
       const desiredEnergy = collapsedRef.current ? 3.1 : 1;
       energy += (desiredEnergy - energy) * 0.035;
+      const targetMomentum = pointerInside ? 0 : 1;
+      flowMomentum += (targetMomentum - flowMomentum) * (pointerInside ? 0.055 : 0.032);
+      if (Math.abs(flowMomentum - targetMomentum) < 0.0005) flowMomentum = targetMomentum;
       const idleX = width * 0.52 + Math.sin(time * 0.31) * width * 0.035;
       const idleY = height * 0.51 + Math.cos(time * 0.24) * height * 0.028;
       const desiredX = pointerInside ? centerX : idleX;
@@ -281,7 +285,7 @@ export default function GravitySingularity({ collapsed }: GravitySingularityProp
 
       const maxRadius = Math.min(width, height) * (collapsedRef.current ? 0.57 : 0.47);
       const coreRadius = Math.min(width, height) * (0.055 + (energy - 1) * 0.006);
-      const motionEnergy = pointerInside ? 0 : energy;
+      const motionEnergy = energy * flowMomentum;
       context.save();
       context.globalCompositeOperation = "lighter";
       context.lineCap = "round";
