@@ -246,7 +246,8 @@ export default function Home() {
           <a href="#work" onClick={() => setMenuOpen(false)}><span>02</span> Selected work</a>
           <a href="#about" onClick={() => setMenuOpen(false)}><span>03</span> Our signal</a>
           <a href="#experiments" onClick={() => setMenuOpen(false)}><span>06</span> New experiments</a>
-          <a href="#contact" onClick={() => setMenuOpen(false)}><span>08</span> Contact</a>
+          <a href="#matter" onClick={() => setMenuOpen(false)}><span>07</span> Unstable matter</a>
+          <a href="#contact" onClick={() => setMenuOpen(false)}><span>09</span> Contact</a>
         </nav>
         <p>WARSAW · PARIS · EVERYWHERE<br />AVAILABLE FOR SELECTED MISSIONS</p>
       </div>
@@ -433,8 +434,18 @@ export default function Home() {
         </div>
       </section>
 
+      <section className="wave-index scroll-reveal" id="matter">
+        <div className="wave-index-title"><span>( 07 — UNSTABLE MATTER )</span><h2>THREE SYSTEMS.<br /><i>NONE STAY STILL.</i></h2></div>
+        <div className="wave-index-list">
+          <Link href="/chromatic-matter" className="wave-index-row matter-row"><span>07.1</span><h3>CHROMATIC MATTER</h3><p>FLUID / GRAVITY</p><i>↗</i></Link>
+          <Link href="/time-rift" className="wave-index-row rift-row"><span>07.2</span><h3>TIME RIFT</h3><p>SCROLL / STORY</p><i>↗</i></Link>
+          <Link href="/signal-garden" className="wave-index-row garden-row"><span>07.3</span><h3>SIGNAL GARDEN</h3><p>GENERATIVE / GROWTH</p><i>↗</i></Link>
+          <Link href="/liquid-glass" className="wave-index-row glass-row"><span>07.4</span><h3>LIQUID GLASS</h3><p>REFRACTION / DEPTH</p><i>↗</i></Link>
+        </div>
+      </section>
+
       <section className="mood-lab scroll-reveal">
-        <div><span>( 07 — TUNE THE FREQUENCY )</span><h2>CHOOSE YOUR<br /><em>GRAVITY.</em></h2></div>
+        <div><span>( 08 — TUNE THE FREQUENCY )</span><h2>CHOOSE YOUR<br /><em>GRAVITY.</em></h2></div>
         <div className="mood-switcher" role="group" aria-label="Site color mode">
           {(["ultraviolet", "solar", "infra"] as const).map((item, index) => (
             <button key={item} className={mood === item ? "active" : ""} onClick={() => setMood(item)}>
