@@ -463,7 +463,7 @@ export default function Home() {
         <div className="contact-orbit" aria-hidden="true"><span>LET&apos;S MAKE IT REAL · </span></div>
         <p>HAVE AN IDEA — OR ONLY A SPARK?</p>
         <a href="mailto:tmxkir14@gmail.com">LET&apos;S TALK <span>↗</span></a>
-        <footer><span>ORBITAL © 2026</span><span>BEYOND THE OBVIOUS</span><a href="#top">BACK TO TOP ↑</a></footer>
+        <footer><span>© 2026 ORBITAL/26. ALL RIGHTS RESERVED.</span><span>BEYOND THE OBVIOUS</span><a href="#top">BACK TO TOP ↑</a></footer>
       </section>
     </main>
   );

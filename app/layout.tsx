@@ -21,6 +21,18 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: "ORBITAL/26 — Digital Gravity",
     description: "Independent creative lab shaping digital worlds with gravity.",
+    authors: [
+      {
+        name: "Tymofii Kyrychenko",
+        url: "https://113lcl.github.io/",
+      },
+    ],
+    creator: "Tymofii Kyrychenko",
+    publisher: "ORBITAL/26",
+    other: {
+      copyright: "© 2026 ORBITAL/26. All rights reserved.",
+      "portfolio-url": "https://113lcl.github.io/",
+    },
     metadataBase: new URL(origin),
     icons: {
       icon: [{ url: "/favicon.svg", type: "image/svg+xml" }],
