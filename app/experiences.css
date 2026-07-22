@@ -47,6 +47,23 @@
 .signal-card-visual::before { content:""; position:absolute; width:104px; aspect-ratio:1; left:50%; top:50%; border-radius:50%; background:var(--signal-color); transform:translate(-50%,-50%); box-shadow:0 0 38px color-mix(in srgb,var(--signal-color) 70%,transparent); }
 .signal-card-visual::after { content:""; position:absolute; width:68px; height:116px; left:50%; top:50%; border:1px solid rgba(255,255,255,.38); border-radius:48% 52% 40% 60%; transform:translate(-50%,-50%) rotate(36deg); mix-blend-mode:overlay; }
 .signal-card-visual i,.signal-card-visual b { position:absolute; z-index:2; left:50%; top:50%; border:1px solid color-mix(in srgb,var(--signal-color) 70%,white); border-radius:50%; transform:translate(-50%,-50%) rotate(-18deg); }.signal-card-visual i { width:142px; height:48px; }.signal-card-visual b { width:7px; height:7px; left:23%; top:31%; border:0; background:#f0efe7; box-shadow:0 0 12px #fff; }
+.signal-visual-2::before { width:102px; border-radius:16% 68% 28% 72%; transform:translate(-50%,-50%) rotate(28deg); }
+.signal-visual-2::after { width:78px; height:78px; border-radius:18%; transform:translate(-50%,-50%) rotate(-18deg); }
+.signal-visual-2 i { width:128px; height:128px; border-style:dashed; transform:translate(-50%,-50%) rotate(16deg); }
+.signal-visual-3::before { width:116px; border-radius:0; clip-path:polygon(50% 0,96% 88%,9% 100%); transform:translate(-50%,-50%) rotate(-8deg); }
+.signal-visual-3::after { width:92px; height:92px; border-radius:50%; transform:translate(-50%,-50%); }
+.signal-visual-3 i { width:154px; height:54px; transform:translate(-50%,-50%) rotate(25deg); }
+.signal-visual-4::before { width:108px; background:var(--signal-color); }
+.signal-visual-4::after { width:88px; height:108px; left:57%; border:0; border-radius:50%; background:#121211; transform:translate(-50%,-50%); mix-blend-mode:normal; }
+.signal-visual-4 i { width:145px; height:54px; transform:translate(-50%,-50%) rotate(-31deg); }
+.signal-visual-4 b { left:30%; top:68%; background:var(--signal-color); box-shadow:0 0 14px var(--signal-color); }
+.signal-visual-5::before { width:108px; background:linear-gradient(90deg,var(--signal-color) 0 46%,#191918 46% 55%,color-mix(in srgb,var(--signal-color) 38%,#111) 55%); transform:translate(-50%,-50%) rotate(14deg); }
+.signal-visual-5::after { width:122px; height:122px; border-color:color-mix(in srgb,var(--signal-color) 65%,white); border-style:dotted; transform:translate(-50%,-50%) rotate(-12deg); }
+.signal-visual-5 i { width:46px; height:140px; transform:translate(-50%,-50%) rotate(42deg); }
+.signal-visual-6::before { width:58px; border-radius:100% 0 100% 0; transform:translate(-50%,-50%) rotate(0); box-shadow:0 -39px 0 color-mix(in srgb,var(--signal-color) 74%,#111),39px 0 0 color-mix(in srgb,var(--signal-color) 84%,#111),0 39px 0 color-mix(in srgb,var(--signal-color) 62%,#111),-39px 0 0 color-mix(in srgb,var(--signal-color) 92%,#111),0 0 38px var(--signal-color); }
+.signal-visual-6::after { width:38px; height:38px; border-radius:50%; background:#111; border:1px solid var(--signal-color); transform:translate(-50%,-50%); }
+.signal-visual-6 i { width:148px; height:148px; border-style:dashed; transform:translate(-50%,-50%) rotate(45deg); }
+.signal-visual-6 b { left:50%; top:50%; width:9px; height:9px; background:var(--signal-color); box-shadow:0 0 18px var(--signal-color); }
 .signal-card-title { display:grid; grid-template-columns:1fr auto; align-items:end; gap:2px 10px; padding:13px 4px 11px; border-bottom:1px solid #33332f; }.signal-card-title span { grid-column:1/-1; color:#6e6d67; font-size:6px; letter-spacing:.13em; }.signal-card-title h2 { margin:3px 0 0; font-size:24px; line-height:.9; letter-spacing:-.055em; }.signal-card-title p { margin:0; color:var(--signal-color); font-size:6px; letter-spacing:.12em; }
 .signal-card dl { margin:0; }.signal-card dl > div { display:grid; grid-template-columns:1fr auto; padding:8px 4px; border-bottom:1px solid #242422; font-size:6px; letter-spacing:.1em; }.signal-card dl > div:last-child { border-bottom:0; }.signal-card dt { color:#6e6d67; }.signal-card dd { margin:0; color:#d8d7cf; }
 @keyframes signal-card-in { from { opacity:0; transform:translate(24px,-50%) scale(.94); } }

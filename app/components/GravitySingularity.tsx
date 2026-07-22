@@ -364,7 +364,7 @@ export default function GravitySingularity({ collapsed }: GravitySingularityProp
       {selectedSignal && (
         <aside className="signal-card" role="dialog" aria-label={`${selectedSignal.name} signal data`} onPointerDown={(event) => event.stopPropagation()}>
           <div className="signal-card-top"><span>{selectedSignal.id} / DISCOVERED</span><button type="button" onClick={() => setSelectedSignal(null)} aria-label="Close signal card">×</button></div>
-          <div className="signal-card-visual" style={{ "--signal-color": selectedSignal.color } as CSSProperties} aria-hidden="true"><i /><b /></div>
+          <div className={`signal-card-visual signal-visual-${signalProfiles.indexOf(selectedSignal) % 6 + 1}`} style={{ "--signal-color": selectedSignal.color } as CSSProperties} aria-hidden="true"><i /><b /></div>
           <div className="signal-card-title"><span>UNKNOWN WORLD</span><h2>{selectedSignal.name}</h2><p>{selectedSignal.status}</p></div>
           <dl>
             <div><dt>TEMPERATURE</dt><dd>{selectedSignal.temperature}</dd></div>
