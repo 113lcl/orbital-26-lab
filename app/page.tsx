@@ -245,7 +245,8 @@ export default function Home() {
           <a href="#portrait" onClick={() => setMenuOpen(false)}><span>01</span> Visual artifact</a>
           <a href="#work" onClick={() => setMenuOpen(false)}><span>02</span> Selected work</a>
           <a href="#about" onClick={() => setMenuOpen(false)}><span>03</span> Our signal</a>
-          <a href="#contact" onClick={() => setMenuOpen(false)}><span>04</span> Contact</a>
+          <a href="#experiments" onClick={() => setMenuOpen(false)}><span>06</span> New experiments</a>
+          <a href="#contact" onClick={() => setMenuOpen(false)}><span>08</span> Contact</a>
         </nav>
         <p>WARSAW · PARIS · EVERYWHERE<br />AVAILABLE FOR SELECTED MISSIONS</p>
       </div>
@@ -417,8 +418,23 @@ export default function Home() {
         <Link className="archive-enter" href="/archive">ENTER ARCHIVE TRANSMISSION ↗</Link>
       </section>
 
+      <section className="future-index scroll-reveal" id="experiments">
+        <div className="future-index-head"><span>( 06 — OPEN EXPERIMENTS )</span><p>THREE NEW INSTRUMENTS<br />FOR CURIOUS HUMANS.</p></div>
+        <div className="future-index-grid">
+          <Link href="/observatory" className="future-index-card future-card-space">
+            <span>06.1 / DEEP FIELD</span><div className="future-card-art"><i /><b /></div><h2>OBSERVATORY</h2><p>MOVE THE LENS · LOCK A STAR ↗</p>
+          </Link>
+          <Link href="/type-engine" className="future-index-card future-card-type">
+            <span>06.2 / KINETIC LETTERS</span><div className="future-card-art"><strong>Aa</strong></div><h2>TYPE ENGINE</h2><p>STRETCH LANGUAGE · BREAK THE GRID ↗</p>
+          </Link>
+          <Link href="/echo-chamber" className="future-index-card future-card-echo">
+            <span>06.3 / SIGNAL MEMORY</span><div className="future-card-art"><i /><i /><i /></div><h2>ECHO CHAMBER</h2><p>DRAW A WAVE · RELEASE AN ECHO ↗</p>
+          </Link>
+        </div>
+      </section>
+
       <section className="mood-lab scroll-reveal">
-        <div><span>( 06 — TUNE THE FREQUENCY )</span><h2>CHOOSE YOUR<br /><em>GRAVITY.</em></h2></div>
+        <div><span>( 07 — TUNE THE FREQUENCY )</span><h2>CHOOSE YOUR<br /><em>GRAVITY.</em></h2></div>
         <div className="mood-switcher" role="group" aria-label="Site color mode">
           {(["ultraviolet", "solar", "infra"] as const).map((item, index) => (
             <button key={item} className={mood === item ? "active" : ""} onClick={() => setMood(item)}>
