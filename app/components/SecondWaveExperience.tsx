@@ -25,7 +25,7 @@ export default function SecondWaveExperience({ kind }: { kind: WaveKind }) {
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
-    let width = 0, height = 0, frame = 0, tick = 0, tension = 0;
+    let width = 0, height = 0, frame = 0, tick = 0, tension = 0, tensionVelocity = 0;
     const shoots = Array.from({ length: planted }, (_, index) => ({
       x: planted <= 1 ? .5 : .05 + (index / (planted - 1)) * .9, height: .15 + Math.random() * .42, lean: (Math.random() - .5) * .12,
       petals: 4 + index % 5, hue: index % 3,
@@ -40,8 +40,11 @@ export default function SecondWaveExperience({ kind }: { kind: WaveKind }) {
       const px = pointer.current.x * width, py = pointer.current.y * height;
       const paletteSet = palette % 3;
       const tensionTarget = pointer.current.down ? 1 : 0;
-      tension += (tensionTarget - tension) * (pointer.current.down ? .042 : .032);
-      const easedTension = tension * tension * (3 - 2 * tension);
+      tensionVelocity += (tensionTarget - tension) * (pointer.current.down ? .012 : .019);
+      tensionVelocity *= pointer.current.down ? .9 : .945;
+      tension += tensionVelocity;
+      if (Math.abs(tensionTarget - tension) < .0005 && Math.abs(tensionVelocity) < .0005) { tension = tensionTarget; tensionVelocity = 0; }
+      const easedTension = Math.max(-.16, Math.min(1.12, tension));
       const background = ctx.createRadialGradient(px, py, 0, px, py, Math.max(width, height) * .72);
       background.addColorStop(0, paletteSet === 1 ? "#17102e" : paletteSet === 2 ? "#111711" : "#101016");
       background.addColorStop(1, "#030304"); ctx.fillStyle = background; ctx.fillRect(0, 0, width, height);
@@ -51,7 +54,8 @@ export default function SecondWaveExperience({ kind }: { kind: WaveKind }) {
         const distance = Math.abs(baseY - py);
         const influence = Math.max(0, 1 - distance / Math.max(180, height * .32));
         const pulse = Math.sin(tick * .012 + index * .31) * (7 + influence * 28);
-        const pull = (py - baseY) * influence * (.42 + easedTension * .4);
+        const stringVibration = pointer.current.down ? 0 : Math.sin(tick * .42 + index * .27) * Math.abs(tensionVelocity) * height * .8 * influence;
+        const pull = (py - baseY) * influence * (.42 + easedTension * .4) + stringVibration;
         const twist = Math.sin(tick * .006 + index * .19 + paletteSet) * influence * width * .065;
         ctx.beginPath(); ctx.moveTo(-40, baseY + pulse * .35);
         ctx.bezierCurveTo(width * .28 + twist, baseY + pulse, px - width * .08, baseY + pull, px, baseY + pull * .92);
