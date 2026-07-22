@@ -24,6 +24,7 @@ export default function FutureExperience({ kind }: { kind: ExperienceKind }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const worldRef = useRef<HTMLElement>(null);
   const readoutRef = useRef<HTMLSpanElement>(null);
+  const typeGhostRef = useRef<HTMLDivElement>(null);
   const pointerRef = useRef({ x: .5, y: .5, active: false, pulse: 0 });
   const [count, setCount] = useState(0);
   const [variant, setVariant] = useState(0);
@@ -77,11 +78,14 @@ export default function FutureExperience({ kind }: { kind: ExperienceKind }) {
       context.lineWidth = 1;
       for (let x = -height; x < width + height; x += 34) { context.beginPath(); context.moveTo(x + time * .08 % 34, 0); context.lineTo(x - height + time * .08 % 34, height); context.stroke(); }
       context.globalCompositeOperation = "multiply";
+      const ghostLeft = typeGhostRef.current?.getBoundingClientRect().left ?? width * .76;
+      const lineGap = Math.max(14, Math.min(26, width * .015));
+      const lineBoundary = Math.max(0, Math.min(width, ghostLeft - lineGap));
       for (let i = 0; i < 9; i++) {
         const y = height * (.16 + i * .095);
         const wave = Math.sin(time * .012 + i * .8) * (16 + pointer.y * 35);
         context.fillStyle = i % 3 === 0 ? "rgba(96,54,255,.34)" : "rgba(12,12,11,.12)";
-        context.fillRect(0, y + wave, width * (.18 + pointer.x * .7), 2 + (i % 3));
+        context.fillRect(0, y + wave, Math.max(0, lineBoundary - (i % 3) * 5), 2 + (i % 3));
       }
       context.globalCompositeOperation = "source-over";
     };
@@ -154,7 +158,7 @@ export default function FutureExperience({ kind }: { kind: ExperienceKind }) {
         <b>LIVE / 2026</b>
       </div>
       {kind === "observatory" && <div className="observatory-label">UNCATALOGUED OBJECT<br /><b>ORBIT / VARIABLE</b></div>}
-      {kind === "type-engine" && <div className="type-ghost" aria-hidden="true">ORBITAL</div>}
+      {kind === "type-engine" && <div className="type-ghost" ref={typeGhostRef} aria-hidden="true">ORBITAL</div>}
       {kind === "echo-chamber" && <div className="echo-ring" aria-hidden="true" />}
     </main>
   );
