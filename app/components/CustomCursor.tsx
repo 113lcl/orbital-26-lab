@@ -35,6 +35,7 @@ export default function CustomCursor() {
     if (!root || !ring || !dot || !label || !finePointer.matches) return;
 
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    document.documentElement.classList.add("has-custom-cursor");
     let targetX = -100;
     let targetY = -100;
     let ringX = -100;
@@ -88,6 +89,7 @@ export default function CustomCursor() {
       window.removeEventListener("pointerup", release);
       window.removeEventListener("pointercancel", release);
       document.removeEventListener("mouseout", leave);
+      document.documentElement.classList.remove("has-custom-cursor");
     };
   }, []);
 

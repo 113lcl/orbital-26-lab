@@ -9,12 +9,16 @@ export default function AmbientPlayer() {
   const [volume, setVolume] = useState(0.34);
 
   useEffect(() => {
-    const storedVolume = Number(window.localStorage.getItem("orbital-volume"));
-    if (Number.isFinite(storedVolume) && storedVolume >= 0 && storedVolume <= 1) {
-      setVolume(storedVolume);
-      if (audioRef.current) audioRef.current.volume = storedVolume;
-    }
+    const frame = window.requestAnimationFrame(() => {
+      const stored = Number(window.localStorage.getItem("orbital-volume"));
+      if (Number.isFinite(stored) && stored >= 0 && stored <= 1) setVolume(stored);
+    });
+    return () => window.cancelAnimationFrame(frame);
   }, []);
+
+  useEffect(() => {
+    if (audioRef.current) audioRef.current.volume = volume;
+  }, [volume]);
 
   const togglePlayback = async () => {
     const audio = audioRef.current;
@@ -40,7 +44,7 @@ export default function AmbientPlayer() {
 
   return (
     <aside className={`sound-dock ${expanded ? "is-open" : ""}`} aria-label="Ambient sound controls">
-      <audio ref={audioRef} src="/distant-dawn.mp3" loop preload="metadata" onEnded={() => setPlaying(false)} />
+      <audio ref={audioRef} src="/distant-dawn.mp3" loop preload="metadata" onPlay={() => setPlaying(true)} onPause={() => setPlaying(false)} onEnded={() => setPlaying(false)} />
       <button className="sound-main" type="button" onClick={togglePlayback} aria-label={playing ? "Pause ambient sound" : "Play ambient sound"}>
         <span className={`sound-bars ${playing ? "is-playing" : ""}`} aria-hidden="true"><i /><i /><i /><i /></span>
         <span>{playing ? "AMBIENT ON" : "PLAY AMBIENT"}</span>

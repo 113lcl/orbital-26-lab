@@ -23,6 +23,7 @@ const copy = {
 export default function FutureExperience({ kind }: { kind: ExperienceKind }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const worldRef = useRef<HTMLElement>(null);
+  const readoutRef = useRef<HTMLSpanElement>(null);
   const pointerRef = useRef({ x: .5, y: .5, active: false, pulse: 0 });
   const [count, setCount] = useState(0);
   const [variant, setVariant] = useState(0);
@@ -127,6 +128,7 @@ export default function FutureExperience({ kind }: { kind: ExperienceKind }) {
     worldRef.current?.style.setProperty("--future-y", `${y * 100}%`);
     worldRef.current?.style.setProperty("--type-stretch", `${.72 + x * .58}`);
     worldRef.current?.style.setProperty("--type-skew", `${(y - .5) * -14}deg`);
+    if (readoutRef.current) readoutRef.current.textContent = `X ${Math.round(x * 999).toString().padStart(3, "0")} · Y ${Math.round(y * 999).toString().padStart(3, "0")}`;
   };
 
   const activate = () => {
@@ -148,7 +150,7 @@ export default function FutureExperience({ kind }: { kind: ExperienceKind }) {
       <button className="future-action" type="button" onPointerDown={(event) => event.stopPropagation()} onClick={(event) => { event.stopPropagation(); activate(); }}><i /> {content.action}</button>
       <div className="future-readout">
         <span>INTERACTIONS / {String(count).padStart(3, "0")}</span>
-        <span>X {Math.round(pointerRef.current.x * 999).toString().padStart(3, "0")} · Y {Math.round(pointerRef.current.y * 999).toString().padStart(3, "0")}</span>
+        <span ref={readoutRef}>X 500 · Y 500</span>
         <b>LIVE / 2026</b>
       </div>
       {kind === "observatory" && <div className="observatory-label">UNCATALOGUED OBJECT<br /><b>ORBIT / VARIABLE</b></div>}

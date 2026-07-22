@@ -73,8 +73,8 @@ function AccessPortal() {
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const user = await getChatGPTUser();
   const requestHeaders = await headers();
-  const host = requestHeaders.get("host") ?? "";
-  const isLocalPreview = host.startsWith("localhost:") || host.startsWith("127.0.0.1:");
+  const host = requestHeaders.get("x-forwarded-host") ?? requestHeaders.get("host") ?? "";
+  const isLocalPreview = /^(localhost|127\.0\.0\.1|\[::1\])(?::\d+)?$/i.test(host);
 
   if (!user && !isLocalPreview) {
     return <html lang="en"><body><AccessPortal /><CustomCursor /></body></html>;

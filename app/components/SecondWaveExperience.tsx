@@ -19,6 +19,7 @@ export default function SecondWaveExperience({ kind }: { kind: WaveKind }) {
   const [phase, setPhase] = useState(0);
   const [planted, setPlanted] = useState(12);
   const [palette, setPalette] = useState(0);
+  const lastWheelRef = useRef(0);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -27,7 +28,9 @@ export default function SecondWaveExperience({ kind }: { kind: WaveKind }) {
     if (!ctx) return;
     let width = 0, height = 0, frame = 0, tick = 0, tension = 0, tensionVelocity = 0;
     const shoots = Array.from({ length: planted }, (_, index) => ({
-      x: planted <= 1 ? .5 : .05 + (index / (planted - 1)) * .9, height: .15 + Math.random() * .42, lean: (Math.random() - .5) * .12,
+      x: .04 + Math.abs(Math.sin((index + 1) * 91.345) * 43758.5453 % 1) * .92,
+      height: .15 + Math.abs(Math.sin((index + 1) * 37.91) * 1537.27 % 1) * .42,
+      lean: (Math.abs(Math.sin((index + 1) * 18.17) * 731.9 % 1) - .5) * .12,
       petals: 4 + index % 5, hue: index % 3,
     }));
 
@@ -101,7 +104,13 @@ export default function SecondWaveExperience({ kind }: { kind: WaveKind }) {
       for (let x = -height; x < width + height; x += 52) { ctx.beginPath(); ctx.moveTo(x + tick % 52, 0); ctx.lineTo(x - height + tick % 52, height); ctx.stroke(); }
     };
 
-    const render = () => { tick++; kind === "gravity-loom" ? loom() : kind === "signal-garden" ? garden() : timeline(); frame = requestAnimationFrame(render); };
+    const render = () => {
+      tick++;
+      if (kind === "gravity-loom") loom();
+      else if (kind === "signal-garden") garden();
+      else timeline();
+      frame = requestAnimationFrame(render);
+    };
     resize(); render(); window.addEventListener("resize", resize);
     return () => { cancelAnimationFrame(frame); window.removeEventListener("resize", resize); };
   }, [kind, palette, planted]);
@@ -117,6 +126,9 @@ export default function SecondWaveExperience({ kind }: { kind: WaveKind }) {
   };
   const wheel = (event: React.WheelEvent<HTMLElement>) => {
     if (kind !== "time-rift") return;
+    const now = Date.now();
+    if (now - lastWheelRef.current < 420 || Math.abs(event.deltaY) < 8) return;
+    lastWheelRef.current = now;
     setPhase((value) => Math.max(0, Math.min(chapters.length - 1, value + (event.deltaY > 0 ? 1 : -1))));
   };
 
