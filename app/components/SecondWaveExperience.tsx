@@ -25,7 +25,7 @@ export default function SecondWaveExperience({ kind }: { kind: WaveKind }) {
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
-    let width = 0, height = 0, frame = 0, tick = 0;
+    let width = 0, height = 0, frame = 0, tick = 0, tension = 0;
     const shoots = Array.from({ length: planted }, (_, index) => ({
       x: planted <= 1 ? .5 : .05 + (index / (planted - 1)) * .9, height: .15 + Math.random() * .42, lean: (Math.random() - .5) * .12,
       petals: 4 + index % 5, hue: index % 3,
@@ -39,6 +39,9 @@ export default function SecondWaveExperience({ kind }: { kind: WaveKind }) {
     const loom = () => {
       const px = pointer.current.x * width, py = pointer.current.y * height;
       const paletteSet = palette % 3;
+      const tensionTarget = pointer.current.down ? 1 : 0;
+      tension += (tensionTarget - tension) * (pointer.current.down ? .042 : .032);
+      const easedTension = tension * tension * (3 - 2 * tension);
       const background = ctx.createRadialGradient(px, py, 0, px, py, Math.max(width, height) * .72);
       background.addColorStop(0, paletteSet === 1 ? "#17102e" : paletteSet === 2 ? "#111711" : "#101016");
       background.addColorStop(1, "#030304"); ctx.fillStyle = background; ctx.fillRect(0, 0, width, height);
@@ -48,7 +51,7 @@ export default function SecondWaveExperience({ kind }: { kind: WaveKind }) {
         const distance = Math.abs(baseY - py);
         const influence = Math.max(0, 1 - distance / Math.max(180, height * .32));
         const pulse = Math.sin(tick * .012 + index * .31) * (7 + influence * 28);
-        const pull = (py - baseY) * influence * (pointer.current.down ? .82 : .42);
+        const pull = (py - baseY) * influence * (.42 + easedTension * .4);
         const twist = Math.sin(tick * .006 + index * .19 + paletteSet) * influence * width * .065;
         ctx.beginPath(); ctx.moveTo(-40, baseY + pulse * .35);
         ctx.bezierCurveTo(width * .28 + twist, baseY + pulse, px - width * .08, baseY + pull, px, baseY + pull * .92);
@@ -114,7 +117,7 @@ export default function SecondWaveExperience({ kind }: { kind: WaveKind }) {
   };
 
   return (
-    <main className={`wave-world wave-${kind}`} onPointerMove={move} onPointerDown={down} onPointerUp={() => { pointer.current.down = false; }} onWheel={wheel}>
+    <main className={`wave-world wave-${kind}`} onPointerMove={move} onPointerDown={down} onPointerUp={() => { pointer.current.down = false; }} onPointerCancel={() => { pointer.current.down = false; }} onPointerLeave={() => { pointer.current.down = false; }} onWheel={wheel}>
       <ExperienceNav index={kind === "gravity-loom" ? "07.1" : kind === "time-rift" ? "07.2" : "07.3"} label={kind.replaceAll("-", " ").toUpperCase()} />
       <canvas ref={canvasRef} aria-label={`${kind.replaceAll("-", " ")} interactive canvas`} />
       {kind === "gravity-loom" && <>
