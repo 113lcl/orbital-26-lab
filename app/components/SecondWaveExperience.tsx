@@ -15,7 +15,7 @@ const chapters = [
 
 export default function SecondWaveExperience({ kind }: { kind: WaveKind }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const pointer = useRef({ x: .5, y: .5, down: false, vx: 0 });
+  const pointer = useRef({ x: .5, y: .5, down: false });
   const gardenBurstRef = useRef(0);
   const [phase, setPhase] = useState(0);
   const [planted, setPlanted] = useState(12);
@@ -28,7 +28,7 @@ export default function SecondWaveExperience({ kind }: { kind: WaveKind }) {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
     let width = 0, height = 0, frame = 0, tick = 0, tension = 0, tensionVelocity = 0;
-    let wind = 0, windVelocity = 0, gardenCycle = 1, seenGardenBurst = gardenBurstRef.current;
+    let wind = 0, gardenCycle = 1, seenGardenBurst = gardenBurstRef.current;
     const dust: { x: number; y: number; vx: number; vy: number; life: number; size: number; color: string }[] = [];
     const shoots = Array.from({ length: planted }, (_, index) => ({
       x: .04 + Math.abs(Math.sin((index + 1) * 91.345) * 43758.5453 % 1) * .92,
@@ -84,11 +84,8 @@ export default function SecondWaveExperience({ kind }: { kind: WaveKind }) {
       ctx.strokeStyle = "rgba(10,10,9,.12)"; ctx.lineWidth = 1;
       for (let y = 0; y < height; y += 28) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(width, y); ctx.stroke(); }
 
-      const cursorWind = (pointer.current.x - .5) * .34 + Math.max(-.16, Math.min(.16, pointer.current.vx * 2.4));
-      windVelocity += (cursorWind - wind) * .018;
-      windVelocity *= .94;
-      wind += windVelocity;
-      pointer.current.vx *= .9;
+      const cursorWind = (pointer.current.x - .5) * .1;
+      wind += (cursorWind - wind) * .025;
 
       if (seenGardenBurst !== gardenBurstRef.current) {
         seenGardenBurst = gardenBurstRef.current;
@@ -133,7 +130,7 @@ export default function SecondWaveExperience({ kind }: { kind: WaveKind }) {
         const initialGrowth = Math.min(1, tick / 90 + index * .05);
         const growth = Math.min(initialGrowth, Math.max(0, rebirth * 1.24 - index * .02));
         const topY = baseY - shoot.height * height * growth;
-        const gust = Math.sin(tick * .018 + index * .83) * .022 + Math.sin(tick * .007 + shoot.x * 9) * .014;
+        const gust = Math.sin(tick * .014 + index * .83) * .006 + Math.sin(tick * .006 + shoot.x * 9) * .004;
         const bend = (shoot.lean + wind + gust) * height * growth;
         const topX = baseX + bend;
         ctx.beginPath(); ctx.strokeStyle = "#121211"; ctx.lineWidth = index % 4 === 0 ? 2 : 1;
@@ -182,7 +179,6 @@ export default function SecondWaveExperience({ kind }: { kind: WaveKind }) {
 
   const move = (event: React.PointerEvent<HTMLElement>) => {
     const nextX = event.clientX / innerWidth;
-    pointer.current.vx += (nextX - pointer.current.x) * .7;
     pointer.current.x = nextX; pointer.current.y = event.clientY / innerHeight;
     event.currentTarget.style.setProperty("--mx", `${event.clientX}px`);
     event.currentTarget.style.setProperty("--my", `${event.clientY}px`);
